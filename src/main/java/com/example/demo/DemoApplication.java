@@ -1,7 +1,10 @@
 package com.example.demo;
 
+import com.example.demo.controller.Message;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -11,4 +14,8 @@ public class DemoApplication {
 		System.out.println("ihoiuh");
 	}
 
+	@PostMapping("/echo")
+	public Message echo(@RequestBody Message input) {
+		return input;
+	}
 }
