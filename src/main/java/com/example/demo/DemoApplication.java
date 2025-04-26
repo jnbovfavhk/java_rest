@@ -14,8 +14,5 @@ public class DemoApplication {
 		System.out.println("ihoiuh");
 	}
 
-	@PostMapping("/echo")
-	public Message echo(@RequestBody Message input) {
-		return input;
-	}
+
 }
