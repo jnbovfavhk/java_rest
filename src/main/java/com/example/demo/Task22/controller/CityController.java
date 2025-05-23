@@ -1,7 +1,9 @@
-package com.example.demo.Task22;
+package com.example.demo.Task22.controller;
 
 
 
+import com.example.demo.Task22.entities.CityInfo;
+import com.example.demo.Task22.services.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,7 @@ public class CityController {
 
     @GetMapping("/city/{name}")
     public CityInfo getCityByName(@PathVariable String name) {
-        return cityService.getCityByName(name);
+        return cityService.getCityByName(name.toLowerCase());
     }
 
     @GetMapping("/country/{country}")

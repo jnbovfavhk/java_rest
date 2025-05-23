@@ -1,4 +1,4 @@
-package com.example.demo.Task22;
+package com.example.demo.Task22.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

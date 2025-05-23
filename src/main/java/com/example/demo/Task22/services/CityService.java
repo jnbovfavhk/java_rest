@@ -1,5 +1,6 @@
-package com.example.demo.Task22;
+package com.example.demo.Task22.services;
 
+import com.example.demo.Task22.entities.CityInfo;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class CityService {
 
     public CityInfo getCityByName(String name) {
         for (CityInfo city : cities) {
-            if ((city.getCity() != null) && (city.getCity().equals(name))) {
+            if ((city.getCity() != null) && (city.getCity().toLowerCase().equals(name))) {
                 return enrichCityWithTime(city);
             }
         }
@@ -88,13 +89,21 @@ public class CityService {
 
     private CityInfo enrichCityWithTime(CityInfo city) {
         try {
+            // Ищем каждый временной параметр
+            // Местное время
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of(city.getTimezone()));
             city.setLocalTime(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            // UTC время
             city.setUtcTime(Instant.now().toString()); // UFC-формат (ISO 8601, UTC)
+            // Смещение локального и UTC времени
+            int timeDifference = now.getOffset().getTotalSeconds() / 3600;
 
+            // Делаем строку нужного вида
             StringBuilder timeDesc = new StringBuilder();
             timeDesc.append(city.getCity()).append(": ");
-            timeDesc.append(now.format(DateTimeFormatter.ofPattern("HH:mm")));
+            timeDesc.append(now.format(DateTimeFormatter.ofPattern("HH:mm"))).append(" (");
+            timeDesc.append(String.format("%+d UTC)", timeDifference));
+
             city.setTimeDescription(timeDesc.toString());
         } catch (Exception e) {
             city.setLocalTime("Unknown");
