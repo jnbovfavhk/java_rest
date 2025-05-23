@@ -1,0 +1,6 @@
+"city","city_ascii","lat","lng","country","iso2","iso3","admin_name","capital","population","id"
+"Moscow","Moscow","55.7558","37.6176","Russia","RU","RUS","Moscow","primary","12678000","1484247882"
+"New York","New York","40.7128","-74.0060","United States","US","USA","New York","","8419000","1840034016"
+"Tokyo","Tokyo","35.6895","139.6917","Japan","JP","JPN","Tokyo","primary","37785000","1392685764"
+"Paris","Paris","48.8566","2.3522","France","FR","FRA","Île-de-France","primary","2148000","1250015082"
+"Sydney","Sydney","-33.8688","151.2093","Australia","AU","AUS","New South Wales","","5312000","1036074917"

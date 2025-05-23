@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Города</title>
+</head>
+
+<body>
+    <form th:action="@{/search}" method="get">
+        <input type="text" name="city" placeholder="Найти город...">
+        <input type="text" name="country" placeholder="Все города в стране..."/>
+        <input type="number" name="timezone" placeholder="Все города о временной зоне...">
+        <button type="submit">Поиск</button>
+    </form>
+    <div th:each="city : ${cities}">
+        <img th:src="${city.imageUrl}" width="100">
+        <h3 th:text="${city.name}"></h3>
+        <a th:href="@{/city/{id}(name=${city.id})}">Подробнее</a>
+    </div>
+</body>
+
+</html>

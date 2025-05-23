@@ -1,13 +1,11 @@
 package com.example.demo.Task22.services;
 
-import com.example.demo.Task22.entities.CityInfo;
 import com.example.demo.Task22.entities.CityInfoForBiggerData;
 import jakarta.annotation.PostConstruct;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.NumberUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -81,6 +79,29 @@ public class CityServiceBigData {
         return enrichCitiesWithTime(cities);
     }
 
+    public List<CityInfoForBiggerData> getCitiesByFilters(String city, String country, Integer timezone) {
+        List<CityInfoForBiggerData> result = new ArrayList<>();
+
+        if (city != null && !city.isEmpty()) {
+            result.add(getCityByName(city));
+            return result;
+        }
+
+        if (country != null && !country.isEmpty()) {
+            result.addAll(getCitiesByCountry(country));
+        }
+
+        if (timezone != null) {
+            if (!result.isEmpty()) {
+                result.removeIf(c -> !getTimeZoneByCity(c.getCity(), c.getCountry()).equals(timezone));
+            }
+            else {
+                result.addAll(getCitiesByTimeZone(timezone));
+            }
+        }
+        return result;
+    }
+
     public CityInfoForBiggerData getCityByName(String name) {
         for (CityInfoForBiggerData city : cities) {
             if ((city.getCity() != null) && (city.getCity().toLowerCase().equals(name))) {
@@ -94,6 +115,29 @@ public class CityServiceBigData {
 
         return cities.stream()
                 .filter(c -> c.getCountry().equalsIgnoreCase(countryName)).toList();
+    }
+
+    public List<CityInfoForBiggerData> getCitiesByTimeZone(Integer timezone) {
+
+        List<CityInfoForBiggerData> outputList = new ArrayList<>();
+
+        for (CityInfoForBiggerData city : cities) {
+            if (getTimeZoneByCity(city.getCity(), city.getCountry()).equals(timezone)) {
+                outputList.add(city);
+            }
+        }
+        return outputList;
+    }
+
+    private Integer getTimeZoneByCity(String city, String country) {
+        String possibleZoneId = ZoneId.getAvailableZoneIds().stream()
+                .filter(zone -> zone.contains(city) || zone.contains(country))
+                .findFirst()
+                .orElse("UTC"); // Если не нашли, используем UTC
+
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of(possibleZoneId));
+
+        return now.getOffset().getTotalSeconds() / 3600;
     }
 
     public Map<String, String> getTimeByCity(String name) {
